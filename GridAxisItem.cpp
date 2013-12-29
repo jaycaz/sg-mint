@@ -11,18 +11,20 @@ void GridAxisItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     //painter->drawText(boundingRect(), "This is the grid", QTextOption(Qt::AlignRight));
 
     QPen axisPen;
-    QColor axisColor(50, 50, 50);
+    QColor axisColor(80, 80, 80);
     axisPen.setWidth(2);
     axisPen.setColor(axisColor);
     painter->setRenderHint(QPainter::Antialiasing);
 
     QPen dotPen(axisPen);
     dotPen.setWidth(1);
+    dotPen.setColor(QColor(50, 50, 50, 100));
 
     // Draw axis lines
     painter->setPen(axisPen);
-    painter->drawLine(0, parentHeight / 2, parentWidth, parentHeight / 2);
-    painter->drawLine(parentWidth / 2, 0, parentWidth / 2, parentHeight);
+    painter->setBrush(axisColor);
+    painter->drawLine(ARROW_LENGTH, parentHeight / 2, parentWidth - ARROW_LENGTH, parentHeight / 2);
+    painter->drawLine(parentWidth / 2, ARROW_LENGTH, parentWidth / 2, parentHeight - ARROW_LENGTH);
 
     // Draw axis arrows
     QVector<QPoint> topArrowPoints;
@@ -55,9 +57,9 @@ void GridAxisItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
     // Draw grid dots
     painter->setPen(dotPen);
-    for(int i = (parentWidth/2) % DOT_SPACING; i < parentWidth; i += DOT_SPACING)
+    for(int i = (parentWidth/2) % DOT_SPACING; i <= parentWidth; i += DOT_SPACING)
     {
-        for(int j = (parentHeight/2) % DOT_SPACING; j < parentHeight; j += DOT_SPACING)
+        for(int j = (parentHeight/2) % DOT_SPACING; j <= parentHeight; j += DOT_SPACING)
         {
             if(i != parentWidth/2 && j != parentHeight/2)
             {

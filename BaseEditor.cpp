@@ -9,7 +9,7 @@ BaseEditor::BaseEditor(QWidget *parent) :
     ui(new Ui::BaseEditor)
 {
     ui->setupUi(this);
-    grid = new GridAxisItem(ui->gridLayoutWidget->width(), ui->gridLayoutWidget->height());
+    grid = new GridAxisItem(width(), height());
     //std::cout << ui->gview->width() << std::endl << ui->gview->height() << std::endl;
 }
 
