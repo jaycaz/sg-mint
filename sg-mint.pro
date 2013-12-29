@@ -13,8 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        MainWindow.cpp
+        MainWindow.cpp \
+    BaseEditor.cpp \
+    GridAxisItem.cpp
 
-HEADERS  += MainWindow.h
+HEADERS  += MainWindow.h \
+    BaseEditor.h \
+    GridAxisItem.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    BaseEditor.ui
