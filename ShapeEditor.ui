@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ShapeEditor</class>
+ <widget class="QWidget" name="ShapeEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QToolButton" name="addLineButton">
+       <property name="toolTip">
+        <string>Add Line</string>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources/icons/editor-icons.qrc">
+         <normaloff>:/icons/editor/add-line.png</normaloff>:/icons/editor/add-line.png</iconset>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="BaseEditor" name="canvas" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BaseEditor</class>
+   <extends>QWidget</extends>
+   <header>BaseEditor.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="resources/icons/editor-icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

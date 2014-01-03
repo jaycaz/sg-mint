@@ -15,11 +15,21 @@ TEMPLATE = app
 SOURCES += main.cpp\
         MainWindow.cpp \
     BaseEditor.cpp \
-    GridAxisItem.cpp
+    GridAxisItem.cpp \
+    GrammarShape.cpp \
+    ShapeEditor.cpp
 
 HEADERS  += MainWindow.h \
     BaseEditor.h \
-    GridAxisItem.h
+    GridAxisItem.h \
+    GrammarShape.h \
+    ShapeEditor.h
 
 FORMS    += MainWindow.ui \
-    BaseEditor.ui
+    BaseEditor.ui \
+    ShapeEditor.ui
+
+RESOURCES += \
+    resources/icons/editor-icons.qrc
+
+OTHER_FILES +=

@@ -57,9 +57,9 @@ void GridAxisItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
     // Draw grid dots
     painter->setPen(dotPen);
-    for(int i = (parentWidth/2) % DOT_SPACING; i <= parentWidth; i += DOT_SPACING)
+    for(int i = (int) (parentWidth/2) % DOT_SPACING; i <= parentWidth; i += DOT_SPACING)
     {
-        for(int j = (parentHeight/2) % DOT_SPACING; j <= parentHeight; j += DOT_SPACING)
+        for(int j = (int) (parentHeight/2) % DOT_SPACING; j <= parentHeight; j += DOT_SPACING)
         {
             if(i != parentWidth/2 && j != parentHeight/2)
             {
@@ -67,5 +67,10 @@ void GridAxisItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
             }
         }
     }
+}
 
+void GridAxisItem::setSize(QSize newSize)
+{
+    parentWidth = newSize.width();
+    parentHeight = newSize.height();
 }

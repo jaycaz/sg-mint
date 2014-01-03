@@ -14,6 +14,13 @@ class BaseEditor : public QWidget
 
 public:
     explicit BaseEditor(QWidget *parent = 0);
+    //QGraphicsScene *getScene();
+    void addItem(QGraphicsItem *item);
+
+    // Map to/from Cartesian coordinate system centered at axis origin
+
+    //QPointF MapFromCart(QPointF cartPoint); // TODO
+    //QPointF MapToCart(QPointF viewPoint); // TODO
     ~BaseEditor();
 
 protected:

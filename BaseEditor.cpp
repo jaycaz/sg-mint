@@ -9,8 +9,8 @@ BaseEditor::BaseEditor(QWidget *parent) :
     ui(new Ui::BaseEditor)
 {
     ui->setupUi(this);
-    grid = new GridAxisItem(width(), height());
-    //std::cout << ui->gview->width() << std::endl << ui->gview->height() << std::endl;
+    grid = new GridAxisItem(size());
+    RedrawGrid();
 }
 
 BaseEditor::~BaseEditor()
@@ -19,15 +19,24 @@ BaseEditor::~BaseEditor()
     delete ui;
 }
 
+//QGraphicsScene* BaseEditor::getScene()
+//{
+//    return ui->canvas->scene();
+//}
+
+void BaseEditor::addItem(QGraphicsItem *item)
+{
+    ui->canvas->scene()->addItem(item);
+}
+
 void BaseEditor::paintEvent(QPaintEvent *)
 {
-    RedrawGrid();
+    //RedrawGrid();
 }
 
 void BaseEditor::RedrawGrid()
 {
     QGraphicsScene *scene = new QGraphicsScene();
-    //scene->addText("Hello Editor!", QFont("Arial", 20));
     scene->addItem(grid);
-    ui->gview->setScene(scene);
+    ui->canvas->setScene(scene);
 }

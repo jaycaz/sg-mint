@@ -1,16 +1,18 @@
 #include "MainWindow.h"
-#include "BaseEditor.h"
 #include <QApplication>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGridLayout>
+
+// Delete later
+#include "ShapeEditor.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    MainWindow w;
-    w.show();
+    //MainWindow w;
+    //w.show();
+
+    ShapeEditor editor;
+    editor.show();
 
     return a.exec();
 }

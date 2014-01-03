@@ -3,13 +3,15 @@
 
 #include <QGraphicsItem>
 #include <QPainter>
+#include <QWidget>
 
 class GridAxisItem : public QGraphicsItem
 {
 private:
 
-    int parentWidth;
-    int parentHeight;
+    qreal parentWidth;
+    qreal parentHeight;
+    QWidget *parent;
 
     static const int ARROW_LENGTH = 6;
     static const int ARROW_WIDTH = 4;
@@ -17,13 +19,25 @@ private:
     static const int DOT_SPACING = 10;
 
 public:
-    GridAxisItem(int pWidth, int pHeight)
-        : parentWidth(pWidth), parentHeight(pHeight)
+    GridAxisItem(QWidget *parent)
+    {
+        this->parent = parent;
+        parentWidth = parent->width();
+        parentHeight = parent->height();
+
+        //QObject::connect(parent, QWidget::resize, this, setSize)
+    }
+
+    GridAxisItem(QSize parentSize)
+        : parentWidth(parentSize.width()), parentHeight(parentSize.height())
     {}
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget);
+
+public slots:
+    void setSize(QSize newSize);
 };
 
 #endif // GRIDAXISITEM_H

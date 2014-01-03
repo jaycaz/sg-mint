@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/icons/editor">
+        <file>add-line.png</file>
+    </qresource>
+</RCC>
