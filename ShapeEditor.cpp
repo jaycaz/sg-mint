@@ -14,8 +14,7 @@ ShapeEditor::ShapeEditor(QWidget *parent) :
     previewDot = new QGraphicsEllipseItem(0, 0, PREVIEW_DOT_RADIUS, PREVIEW_DOT_RADIUS);
     previewDot->setPen(QPen(PREVIEW_DOT_COLOR));
     previewDot->setBrush(QBrush(PREVIEW_DOT_COLOR));
-    //canvasScene = ui->canvas->getScene();
-    //canvasScene->addItem(&previewDot);
+    //previewDot->setVisible(false);
     ui->canvas->addItem(previewDot);
 }
 
@@ -28,7 +27,7 @@ ShapeEditor::~ShapeEditor()
 
 void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
 {
-    previewDot->setPos(ui->canvas->mapFromGlobal(event->globalPos()));
+    previewDot->setPos(event->pos());
     repaint();
 }
 

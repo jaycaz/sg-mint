@@ -2,13 +2,15 @@
 
 QRectF GridAxisItem::boundingRect() const
 {
-    return QRectF(0, 0, parentWidth, parentHeight);
+    return QRectF(parent->rect());
 }
 
 void GridAxisItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                           QWidget *widget)
 {
     //painter->drawText(boundingRect(), "This is the grid", QTextOption(Qt::AlignRight));
+    int parentWidth = parent->width();
+    int parentHeight = parent->height();
 
     QPen axisPen;
     QColor axisColor(80, 80, 80);
@@ -71,6 +73,6 @@ void GridAxisItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 void GridAxisItem::setSize(QSize newSize)
 {
-    parentWidth = newSize.width();
-    parentHeight = newSize.height();
+//    parentWidth = newSize.width();
+//    parentHeight = newSize.height();
 }

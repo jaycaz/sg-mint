@@ -9,8 +9,8 @@ class GridAxisItem : public QGraphicsItem
 {
 private:
 
-    qreal parentWidth;
-    qreal parentHeight;
+    //qreal parentWidth;
+    //qreal parentHeight;
     QWidget *parent;
 
     static const int ARROW_LENGTH = 6;
@@ -22,15 +22,15 @@ public:
     GridAxisItem(QWidget *parent)
     {
         this->parent = parent;
-        parentWidth = parent->width();
-        parentHeight = parent->height();
+        //parentWidth = parent->width();
+        //parentHeight = parent->height();
 
         //QObject::connect(parent, QWidget::resize, this, setSize)
     }
 
-    GridAxisItem(QSize parentSize)
-        : parentWidth(parentSize.width()), parentHeight(parentSize.height())
-    {}
+//    GridAxisItem(QSize parentSize)
+//        : parentWidth(parentSize.width()), parentHeight(parentSize.height())
+//    {}
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,

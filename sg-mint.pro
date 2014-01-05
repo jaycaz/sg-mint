@@ -14,19 +14,18 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    BaseEditor.cpp \
     GridAxisItem.cpp \
     GrammarShape.cpp \
-    ShapeEditor.cpp
+    ShapeEditor.cpp \
+    EditorArea.cpp
 
 HEADERS  += MainWindow.h \
-    BaseEditor.h \
     GridAxisItem.h \
     GrammarShape.h \
-    ShapeEditor.h
+    ShapeEditor.h \
+    EditorArea.h
 
 FORMS    += MainWindow.ui \
-    BaseEditor.ui \
     ShapeEditor.ui
 
 RESOURCES += \
