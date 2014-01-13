@@ -18,11 +18,6 @@ void EditorArea::addItem(QGraphicsItem *item)
     scene()->addItem(item);
 }
 
-//void EditorArea::paintEvent(QPaintEvent *)
-//{
-//    //RedrawGrid();
-//}
-
 void EditorArea::mouseMoveEvent(QMouseEvent *event)
 {
     //event->ignore();

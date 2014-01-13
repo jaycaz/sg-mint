@@ -6,22 +6,27 @@
 
 #include "GridAxisItem.h"
 
+/**
+ * @brief Controller layer for ShapeEditor and RuleEditor objects
+ */
 class EditorArea : public QGraphicsView
 {
     Q_OBJECT
 public:
     explicit EditorArea(QWidget *parent = 0);
+    ~EditorArea();
 
+    /**
+     * @brief Add any QGraphicsItem to the scene of the EditorArea
+     * @param item
+     */
     void addItem(QGraphicsItem *item);
 
     // Map to/from Cartesian coordinate system centered at axis origin
-
     //QPointF MapFromCart(QPointF cartPoint); // TODO
     //QPointF MapToCart(QPointF viewPoint); // TODO
-    ~EditorArea();
 
 protected:
-//    void paintEvent(QPaintEvent *);
     void mouseMoveEvent(QMouseEvent *event);
 
 private:

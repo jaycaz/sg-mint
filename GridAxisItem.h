@@ -1,16 +1,17 @@
-#ifndef GRIDAXISITEM_H
+﻿#ifndef GRIDAXISITEM_H
 #define GRIDAXISITEM_H
 
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QWidget>
 
+/**
+ * @brief Used to control the display of the grid and axis in an EditorArea canvas
+ */
 class GridAxisItem : public QGraphicsItem
 {
 private:
 
-    //qreal parentWidth;
-    //qreal parentHeight;
     QWidget *parent;
 
     static const int ARROW_LENGTH = 6;
@@ -19,25 +20,18 @@ private:
     static const int DOT_SPACING = 10;
 
 public:
+    /**
+     * @param parent Parent widget GridAxisItem will be embedded in,
+     * item will expand to fill parent widget
+     */
     GridAxisItem(QWidget *parent)
     {
         this->parent = parent;
-        //parentWidth = parent->width();
-        //parentHeight = parent->height();
-
-        //QObject::connect(parent, QWidget::resize, this, setSize)
     }
-
-//    GridAxisItem(QSize parentSize)
-//        : parentWidth(parentSize.width()), parentHeight(parentSize.height())
-//    {}
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget);
-
-public slots:
-    void setSize(QSize newSize);
 };
 
 #endif // GRIDAXISITEM_H

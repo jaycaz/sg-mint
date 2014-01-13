@@ -70,9 +70,3 @@ void GridAxisItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         }
     }
 }
-
-void GridAxisItem::setSize(QSize newSize)
-{
-//    parentWidth = newSize.width();
-//    parentHeight = newSize.height();
-}

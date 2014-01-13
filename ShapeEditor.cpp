@@ -6,7 +6,6 @@ ShapeEditor::ShapeEditor(QWidget *parent) :
     ui(new Ui::ShapeEditor)
 {
     shape = new GrammarShape();
-    //previewDotPosition = NULL;
     ui->setupUi(this);
     editorMode = DEFAULT;
     addMode = NONE;
@@ -50,21 +49,21 @@ void ShapeEditor::on_addLineButton_toggled(bool checked)
    repaint();
 }
 
-//void ShapeEditor::paintEvent(QPaintEvent *e)
-//{
-//    switch(editorMode)
-//    {
-//        case ShapeEditor::ADD:
-//            break;
+void ShapeEditor::paintEvent(QPaintEvent *e)
+{
+    switch(editorMode)
+    {
+        case ShapeEditor::ADD:
+            break;
 
-//        case ShapeEditor::DELETE:
-//            break;
+        case ShapeEditor::DELETE:
+            break;
 
-//        case ShapeEditor::DEFAULT:
-//            break;
+        case ShapeEditor::DEFAULT:
+            break;
 
-//        default:
-//            break;
-//    }
+        default:
+            break;
+    }
 
-//}
+}

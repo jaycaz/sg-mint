@@ -11,6 +11,9 @@ namespace Ui {
 class ShapeEditor;
 }
 
+/**
+ * @brief A view class for the editor used to view and update GrammarShape objects
+ */
 class ShapeEditor : public QWidget
 {
     Q_OBJECT
@@ -19,6 +22,9 @@ public:
     explicit ShapeEditor(QWidget *parent = 0);
     ~ShapeEditor();
 
+    /**
+     * @brief Changes depending on what tool/shape is selected
+     */
     enum EditorMode
     {
         ADD,
@@ -27,6 +33,9 @@ public:
         DEFAULT
     };
 
+    /**
+     * @brief When ShapeEditor is in ADD mode, indicates the shape being added
+     */
     enum AddMode
     {
         LINE,
@@ -40,28 +49,29 @@ public:
 
 protected:
     void mouseMoveEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *event);
 
 private slots:
     void on_addLineButton_toggled(bool checked);
 
-//protected:
-//    void paintEvent(QPaintEvent *);
-
 private:
 
-    //QGraphicsScene *canvasScene;
-
-    // The shape that the Shape Editor is editing
+    /**
+     * @brief The shape model that the ShapeEditor is currently editing
+     */
     GrammarShape *shape;
 
-    // Toolbar object that stores all of the tool buttons
+    /**
+     * @brief Allows access to all ShapeEditor tool buttons
+     */
     QToolBar editorTools;
 
-    // Preview dot displays to show where a shape component will be added
-    QPointF *previewDotPosition;
+    /**
+     * @brief Displays to show where an editor tool will be applied
+     */
     QGraphicsEllipseItem *previewDot;
     qreal PREVIEW_DOT_RADIUS = 5;
-    QColor PREVIEW_DOT_COLOR = QColor(0, 0, 0, 100); // translucent black
+    QColor PREVIEW_DOT_COLOR = QColor(0, 0, 0, 100); // semi-transparent, black
 
     Ui::ShapeEditor *ui;
 };
