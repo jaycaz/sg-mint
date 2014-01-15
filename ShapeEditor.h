@@ -19,7 +19,17 @@ class ShapeEditor : public QWidget
     Q_OBJECT
 
 public:
+    /**
+     * @brief Default constructor. Will construct a new GrammarShape item.
+     */
     explicit ShapeEditor(QWidget *parent = 0);
+
+//    /**
+//     * @brief Loads targetShape for editing
+//     * @param targetShape
+//     */
+//    explicit ShapeEditor(GrammarShape *targetShape, QWidget *parent = 0);
+
     ~ShapeEditor();
 
     /**
@@ -49,6 +59,9 @@ public:
 
 protected:
     void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    //void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
     void paintEvent(QPaintEvent *event);
 
 private slots:
@@ -59,7 +72,13 @@ private:
     /**
      * @brief The shape model that the ShapeEditor is currently editing
      */
-    GrammarShape *shape;
+    GrammarShape *grammarShape;
+
+    /**
+     * @brief Used to store an item currently being drawn by the user
+     */
+    QGraphicsItem *drawingItem;
+    QPointF drawingItemStartPos;
 
     /**
      * @brief Allows access to all ShapeEditor tool buttons
@@ -72,6 +91,12 @@ private:
     QGraphicsEllipseItem *previewDot;
     qreal PREVIEW_DOT_RADIUS = 5;
     QColor PREVIEW_DOT_COLOR = QColor(0, 0, 0, 100); // semi-transparent, black
+
+    /**
+     * @brief Position where item points will actually be placed.
+     * Will be calculated based on snap-to-grid settings, etc.
+     */
+    QPointF placePos;
 
     Ui::ShapeEditor *ui;
 };

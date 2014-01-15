@@ -3,10 +3,14 @@
 
 #include <QGraphicsItemGroup>
 
-class GrammarShape : public QGraphicsItemGroup
+
+class GrammarShape
 {
 public:
     GrammarShape();
+    ~GrammarShape();
+
+    QGraphicsItemGroup items;
 };
 
 #endif // GRAMMARSHAPE_H

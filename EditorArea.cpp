@@ -27,6 +27,24 @@ void EditorArea::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
+void EditorArea::mousePressEvent(QMouseEvent *event)
+{
+    //event->ignore();
+    if(parent() != NULL)
+    {
+        parent()->event(static_cast<QEvent*>(event));
+    }
+}
+
+void EditorArea::mouseReleaseEvent(QMouseEvent *event)
+{
+    //event->ignore();
+    if(parent() != NULL)
+    {
+        parent()->event(static_cast<QEvent*>(event));
+    }
+}
+
 void EditorArea::InitGrid()
 {
     QGraphicsScene *scene = new QGraphicsScene();
