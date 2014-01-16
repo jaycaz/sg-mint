@@ -8,8 +8,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    ShapeEditor editor;
-    editor.show();
+//    ShapeEditor editor;
+//    editor.show();
+    MainWindow window;
+    window.show();
 
     return a.exec();
 }

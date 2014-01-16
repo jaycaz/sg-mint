@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/icons/editor">
         <file>add-line.png</file>
+        <file>add-polyline.png</file>
+        <file>add-polygon.png</file>
+        <file>select.png</file>
     </qresource>
 </RCC>

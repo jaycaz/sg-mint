@@ -2,7 +2,7 @@
 #define SHAPEEDITOR_H
 
 #include <QWidget>
-#include <QToolBar>
+#include <QToolButton>
 #include <QGraphicsScene>
 #include <QMouseEvent>
 #include "GrammarShape.h"
@@ -62,10 +62,15 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     //void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
     void paintEvent(QPaintEvent *event);
 
 private slots:
     void on_addLineButton_toggled(bool checked);
+
+    void on_addPolylineButton_toggled(bool checked);
+
+    void on_addPolygonButton_toggled(bool checked);
 
 private:
 
@@ -78,12 +83,24 @@ private:
      * @brief Used to store an item currently being drawn by the user
      */
     QGraphicsItem *drawingItem;
-    QPointF drawingItemStartPos;
+    QPointF lastClickPos;
+    bool ignoreClick;
 
     /**
      * @brief Allows access to all ShapeEditor tool buttons
      */
-    QToolBar editorTools;
+    //QToolBar editorTools;
+
+    /**
+     * @brief Unchecks all buttons in shape editor tool pane
+     * @param except An optional button to ignore unchecking
+     */
+    void uncheckAllTools(QToolButton *except);
+
+    /**
+     * @brief Common behavior for any add button
+     */
+    void onAddButtonToggled(bool checked);
 
     /**
      * @brief Displays to show where an editor tool will be applied
