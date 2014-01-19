@@ -3,9 +3,19 @@
 EditorArea::EditorArea(QWidget *parent) :
     QGraphicsView(parent)
 {
+    QGraphicsScene *scene = new QGraphicsScene();
+    setScene(scene);
     setMouseTracking(true);
-    setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    InitGrid();
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //InitGrid();
+    //qreal trX = grid->boundingRect().width() / 2;
+    //qreal trY = grid->boundingRect().height() / 2;
+    //translate(trX, trY);
+    //scale(1, -1);
+    QGraphicsTextItem *text = new QGraphicsTextItem("L");
+    text->setX(0);
+    text->setY(0);
+    addItem(text);
 }
 
 EditorArea::~EditorArea()
@@ -16,6 +26,20 @@ EditorArea::~EditorArea()
 void EditorArea::addItem(QGraphicsItem *item)
 {
     scene()->addItem(item);
+}
+
+void EditorArea::showEvent(QShowEvent *event)
+{
+//    adjustSize();
+//    qreal w = scene()->width();
+//    qreal h = scene()->height();
+    qreal w = width();
+    qreal h = height();
+//    fitInView(0, 0, scene()->width(), scene()->height());
+//    grid = new GridAxisItem(this);
+    grid = new GridAxisItem(this);
+    addItem(grid);
+    repaint();
 }
 
 void EditorArea::mouseMoveEvent(QMouseEvent *event)
@@ -48,8 +72,9 @@ void EditorArea::mouseReleaseEvent(QMouseEvent *event)
 void EditorArea::InitGrid()
 {
     QGraphicsScene *scene = new QGraphicsScene();
-    grid = new GridAxisItem(this);
-    scene->addItem(grid);
+    //grid = new GridAxisItem(this);
     setScene(scene);
+    //grid = new GridAxisItem(scene);
+    //scene->addItem(grid);
     repaint();
 }
