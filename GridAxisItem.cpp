@@ -80,7 +80,7 @@ void GridAxisItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         {
             if(i >= gridLeft && j >= gridTop && i != gridLeft + (gridWidth / 2) && j != gridTop + (gridHeight / 2))
             {
-                painter->drawEllipse(QPoint(i, j), DOT_RADIUS, DOT_RADIUS);
+                painter->drawEllipse(QPoint(i, j), DOT_SIZE, DOT_SIZE);
             }
         }
     }

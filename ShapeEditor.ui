@@ -20,9 +20,9 @@
    <item>
     <layout class="QHBoxLayout" name="editorTools">
      <item>
-      <widget class="QToolButton" name="toolButton">
+      <widget class="QToolButton" name="selectButton">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="toolTip">
         <string>Select</string>

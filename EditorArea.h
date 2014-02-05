@@ -20,11 +20,16 @@ public:
      * @brief Add any QGraphicsItem to the scene of the EditorArea
      * @param item
      */
-    void addItem(QGraphicsItem *item);
+    void addItemToScene(QGraphicsItem *item);
+    void addPointToSelection(const QPoint &selPos);
+    void clearSelection();
 
     // Map to/from Cartesian coordinate system centered at axis origin
     //QPointF MapFromCart(QPointF cartPoint); // TODO
     //QPointF MapToCart(QPointF viewPoint); // TODO
+
+public slots:
+    void onSelectionChanged();
 
 protected:
     void showEvent(QShowEvent *event);
@@ -34,9 +39,9 @@ protected:
 
 private:
     GridAxisItem *grid;
-
     void InitGrid();
 
+    static const int SELECT_RADIUS = 5;
 };
 
 #endif // EDITORAREA_H

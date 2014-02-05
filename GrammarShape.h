@@ -10,7 +10,8 @@ public:
     GrammarShape();
     ~GrammarShape();
 
-    QGraphicsItemGroup items;
+//    QGraphicsItemGroup items; // Changed to list to avoid selection issue
+    QList<QGraphicsItem*> items;
 };
 
 #endif // GRAMMARSHAPE_H

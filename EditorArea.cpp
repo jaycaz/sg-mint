@@ -1,4 +1,5 @@
 #include "EditorArea.h"
+#include <QDebug>
 
 EditorArea::EditorArea(QWidget *parent) :
     QGraphicsView(parent)
@@ -6,16 +7,11 @@ EditorArea::EditorArea(QWidget *parent) :
     QGraphicsScene *scene = new QGraphicsScene();
     setScene(scene);
     setMouseTracking(true);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    //InitGrid();
-    //qreal trX = grid->boundingRect().width() / 2;
-    //qreal trY = grid->boundingRect().height() / 2;
-    //translate(trX, trY);
-    //scale(1, -1);
-    QGraphicsTextItem *text = new QGraphicsTextItem("L");
-    text->setX(0);
-    text->setY(0);
-    addItem(text);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    setDragMode(QGraphicsView::RubberBandDrag);
+    connect(scene, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
+
+//    installEventFilter(parent);
 }
 
 EditorArea::~EditorArea()
@@ -23,9 +19,38 @@ EditorArea::~EditorArea()
     delete grid;
 }
 
-void EditorArea::addItem(QGraphicsItem *item)
+void EditorArea::addItemToScene(QGraphicsItem *item)
 {
+    item->setFlag(QGraphicsItem::ItemIsSelectable, true);
     scene()->addItem(item);
+}
+
+void EditorArea::addPointToSelection(const QPoint &selPos)
+{
+    QPainterPath selPath = scene()->selectionArea();
+    selPath.addEllipse(selPos, SELECT_RADIUS, SELECT_RADIUS);
+    scene()->setSelectionArea(selPath, transform());
+
+//    auto *path = new QGraphicsPathItem(selPath);
+//    addItemToScene(path);
+//    path->setFlag(QGraphicsItem::ItemIsSelectable, false);
+
+    //qDebug() << "Selection: " << selArea->pos() << endl;
+}
+
+void EditorArea::clearSelection()
+{
+    scene()->setSelectionArea(QPainterPath(), transform());
+    scene()->clearSelection();
+}
+
+void EditorArea::onSelectionChanged()
+{
+    for(int i = 0; i < scene()->selectedItems().size(); i++)
+    {
+        QGraphicsItem *item = scene()->selectedItems()[i];
+        qDebug() << "Item " << i << ": type " << item->type() << endl;
+    }
 }
 
 void EditorArea::showEvent(QShowEvent *event)
@@ -38,7 +63,7 @@ void EditorArea::showEvent(QShowEvent *event)
 //    fitInView(0, 0, scene()->width(), scene()->height());
 //    grid = new GridAxisItem(this);
     grid = new GridAxisItem(this);
-    addItem(grid);
+    scene()->addItem(grid);
     repaint();
 }
 

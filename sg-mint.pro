@@ -18,13 +18,15 @@ SOURCES += main.cpp\
     GridAxisItem.cpp \
     GrammarShape.cpp \
     ShapeEditor.cpp \
-    EditorArea.cpp
+    EditorArea.cpp \
+    EditorUtils.cpp
 
 HEADERS  += MainWindow.h \
     GridAxisItem.h \
     GrammarShape.h \
     ShapeEditor.h \
-    EditorArea.h
+    EditorArea.h \
+    EditorUtils.h
 
 FORMS    += MainWindow.ui \
     ShapeEditor.ui

@@ -38,9 +38,7 @@ public:
     enum EditorMode
     {
         ADD,
-        DELETE,
-        TRANSFORM,
-        DEFAULT
+        SELECT
     };
 
     /**
@@ -58,6 +56,7 @@ public:
     AddMode addMode;
 
 protected:
+    bool eventFilter(QObject *obj, QEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     //void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
@@ -71,6 +70,8 @@ private slots:
     void on_addPolylineButton_toggled(bool checked);
 
     void on_addPolygonButton_toggled(bool checked);
+
+    void on_selectButton_toggled(bool checked);
 
 private:
 

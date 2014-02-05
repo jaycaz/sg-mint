@@ -1,18 +1,20 @@
 #include "ShapeEditor.h"
 #include "ui_ShapeEditor.h"
+#include <QDebug>
 
 ShapeEditor::ShapeEditor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ShapeEditor)
 {
     ui->setupUi(this);
-    editorMode = DEFAULT;
+    editorMode = SELECT;
+    ui->selectButton->setChecked(true);
     addMode = NONE;
     drawingItem = NULL;
     ignoreClick = false;
 
     grammarShape = new GrammarShape();
-    ui->canvas->addItem(&(grammarShape->items));
+    //ui->canvas->addItemToScene(&(grammarShape->items));
 
     // Init preview dot
     previewDot = new QGraphicsEllipseItem(
@@ -23,8 +25,7 @@ ShapeEditor::ShapeEditor(QWidget *parent) :
     previewDot->setPen(QPen(PREVIEW_DOT_COLOR));
     previewDot->setBrush(QBrush(PREVIEW_DOT_COLOR));
     previewDot->setVisible(false);
-    ui->canvas->addItem(previewDot);
-
+    ui->canvas->addItemToScene(previewDot);
     // Init toolbar
     //editorTools.addAction()
     update();
@@ -37,17 +38,30 @@ ShapeEditor::~ShapeEditor()
     delete ui;
 }
 
+bool ShapeEditor::eventFilter(QObject *obj, QEvent *event)
+{
+//    if(obj != ui->canvas)
+//        return false;
+
+//    qDebug() << event->type() << endl;
+//    if(event->type() == QEvent::MouseMove)
+//    {
+//        qDebug() << "move" << endl;
+//        return true;
+//    }
+    return false;
+}
+
 void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
 {
 //    if(event->buttons() & Qt::LeftButton)
 //    {
         //dragMoveEvent(dynamic_cast<QGraphicsSceneDragDropEvent*>(event));
-        // Drag operations
+        qreal startPlaceX = lastClickPos.x();
+        qreal startPlaceY = lastClickPos.y();
         switch(editorMode)
         {
             case ShapeEditor::ADD:
-            qreal startPlaceX = lastClickPos.x();
-            qreal startPlaceY = lastClickPos.y();
             switch(addMode)
             {
                 case ShapeEditor::LINE:
@@ -69,7 +83,7 @@ void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
                 {
                     // Create new line item
                     drawingItem = new QGraphicsLineItem(startPlaceX, startPlaceY, placePos.x(), placePos.y());
-                    ui->canvas->addItem(drawingItem);
+                    ui->canvas->addItemToScene(drawingItem);
                 }
                 break;
 
@@ -89,6 +103,14 @@ void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
                 }
                 break;
             }
+            break;
+
+            case ShapeEditor::SELECT:
+//            if(event->buttons() & Qt::LeftButton)
+//            {
+
+//            }
+            break;
         }
     //}
     // Calculate place position based on options
@@ -105,10 +127,6 @@ void ShapeEditor::mousePressEvent(QMouseEvent *event)
     lastClickPos = placePos;
 }
 
-//void dragMoveEvent(QGraphicsSceneDragDropEvent *event)
-//{
-//}
-
 void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
 {
     switch(editorMode)
@@ -120,7 +138,8 @@ void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
             if(drawingItem != NULL)
             {
                 // Add line to grammar shape
-                grammarShape->items.addToGroup(drawingItem);
+//                grammarShape->items.addToGroup(drawingItem);
+                grammarShape->items.push_back(drawingItem);
                 drawingItem = NULL;
             }
             break;
@@ -140,7 +159,7 @@ void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
                 initPoly << QPointF(placePos);
                 QGraphicsPolygonItem *drawingPoly = new QGraphicsPolygonItem(initPoly);
                 drawingItem = (QGraphicsItem*) drawingPoly;
-                ui->canvas->addItem(drawingItem);
+                ui->canvas->addItemToScene(drawingItem);
             }
             else
             {
@@ -154,6 +173,36 @@ void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
             }
             break;
         }
+        break;
+
+        // Selection tool options
+        case ShapeEditor::SELECT:
+        QList<QGraphicsItem*> selectedItems = ui->canvas->scene()->selectedItems();
+        qDebug() << "Pos: " << event->pos();
+
+        foreach(QGraphicsItem *item, selectedItems)
+        {
+//            auto *line = (QGraphicsLineItem*) item;
+//            if(line != NULL)
+//            {
+//                line->setPen(QPen(QColor(0, 0, 0)));
+//            }
+        }
+
+        ui->canvas->clearSelection();
+        ui->canvas->addPointToSelection(event->pos());
+
+        // Item(s) selected, mark
+        QList<QGraphicsItem*> newSelectedItems = ui->canvas->scene()->selectedItems();
+        foreach(QGraphicsItem *item, newSelectedItems)
+        {
+//            auto *line = (QGraphicsLineItem*) item;
+//            if(line != NULL)
+//            {
+//                line->setPen(QPen(QColor(255, 0, 0)));
+//            }
+        }
+
         break;
     }
 }
@@ -169,7 +218,8 @@ void ShapeEditor::mouseDoubleClickEvent(QMouseEvent *event)
             if(drawingItem != NULL)
             {
                 // Add polygon to grammar shape
-                grammarShape->items.addToGroup(drawingItem);
+//                grammarShape->items.addToGroup(drawingItem);
+                grammarShape->items.push_back(drawingItem);
                 drawingItem = NULL;
                 ignoreClick = true;
             }
@@ -205,7 +255,6 @@ void ShapeEditor::on_addPolylineButton_toggled(bool checked)
     }
     else
     {
-        addMode = NONE;
     }
     update();
 }
@@ -220,7 +269,6 @@ void ShapeEditor::on_addPolygonButton_toggled(bool checked)
     }
     else
     {
-        addMode = NONE;
     }
 }
 
@@ -229,6 +277,7 @@ void ShapeEditor::onAddButtonToggled(bool checked)
     ignoreClick = false;
     if(checked)
     {
+       ui->canvas->setDragMode(QGraphicsView::NoDrag);
        ui->canvas->setCursor(Qt::CrossCursor);
        previewDot->setVisible(true);
        editorMode = ADD;
@@ -237,7 +286,16 @@ void ShapeEditor::onAddButtonToggled(bool checked)
     {
        ui->canvas->setCursor(Qt::ArrowCursor);
        previewDot->setVisible(false);
-       editorMode = DEFAULT;
+    }
+}
+
+void ShapeEditor::on_selectButton_toggled(bool checked)
+{
+    if(checked)
+    {
+        ui->canvas->setDragMode(QGraphicsView::RubberBandDrag);
+        editorMode = SELECT;
+        addMode = NONE;
     }
 }
 
@@ -246,12 +304,6 @@ void ShapeEditor::paintEvent(QPaintEvent *e)
     switch(editorMode)
     {
         case ShapeEditor::ADD:
-            break;
-
-        case ShapeEditor::DELETE:
-            break;
-
-        case ShapeEditor::DEFAULT:
             break;
 
         default:

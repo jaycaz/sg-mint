@@ -17,25 +17,12 @@ public:
      * @param parent Parent widget GridAxisItem will be embedded in,
      * item will expand to fill parent widget
      */
-//    GridAxisItem(QWidget *parent)
-//    {
-//        this->parent = parent;
-//    }
-
-    GridAxisItem()
-    {
-        parent = NULL;
-    }
-
-    GridAxisItem(QGraphicsScene *scene)
-    {
-        parent = scene;
-
-    }
 
     GridAxisItem(QGraphicsView *view)
     {
         this->view = view;
+        setFlag(QGraphicsItem::ItemIsSelectable, false);
+        setZValue(-1);
     }
 
     QRectF boundingRect() const;
@@ -51,9 +38,8 @@ private:
     static const int PADDING = 5;
     static const int ARROW_LENGTH = 6;
     static const int ARROW_WIDTH = 4;
-    static const int DOT_RADIUS = 1;
+    static const int DOT_SIZE = 1;
     static const int DOT_SPACING = 10;
-
 };
 
 #endif // GRIDAXISITEM_H
