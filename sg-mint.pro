@@ -19,14 +19,16 @@ SOURCES += main.cpp\
     GrammarShape.cpp \
     ShapeEditor.cpp \
     EditorArea.cpp \
-    EditorUtils.cpp
+    EditorUtils.cpp \
+    DragHandle.cpp
 
 HEADERS  += MainWindow.h \
     GridAxisItem.h \
     GrammarShape.h \
     ShapeEditor.h \
     EditorArea.h \
-    EditorUtils.h
+    EditorUtils.h \
+    DragHandle.h
 
 FORMS    += MainWindow.ui \
     ShapeEditor.ui

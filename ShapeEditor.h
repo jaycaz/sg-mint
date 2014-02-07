@@ -84,7 +84,6 @@ private:
      * @brief Used to store an item currently being drawn by the user
      */
     QGraphicsItem *drawingItem;
-    QPointF lastClickPos;
     bool ignoreClick;
 
     /**

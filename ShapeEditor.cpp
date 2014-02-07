@@ -54,11 +54,13 @@ bool ShapeEditor::eventFilter(QObject *obj, QEvent *event)
 
 void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
 {
+//    QWidget::mouseMoveEvent(event);
+
 //    if(event->buttons() & Qt::LeftButton)
 //    {
         //dragMoveEvent(dynamic_cast<QGraphicsSceneDragDropEvent*>(event));
-        qreal startPlaceX = lastClickPos.x();
-        qreal startPlaceY = lastClickPos.y();
+        qreal startPlaceX = ui->canvas->getLastClickPos().x();
+        qreal startPlaceY = ui->canvas->getLastClickPos().y();
         switch(editorMode)
         {
             case ShapeEditor::ADD:
@@ -115,7 +117,8 @@ void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
     //}
     // Calculate place position based on options
     // TODO: Add snap-to-grid option
-    placePos = event->pos();
+//    placePos = event->pos();
+    placePos = event->localPos();
 
     previewDot->setPos(placePos);
 
@@ -124,11 +127,15 @@ void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
 
 void ShapeEditor::mousePressEvent(QMouseEvent *event)
 {
-    lastClickPos = placePos;
+//    QWidget::mousePressEvent(event);
+
+//    lastClickPos = placePos;
 }
 
 void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
 {
+//    QWidget::mouseReleaseEvent(event);
+
     switch(editorMode)
     {
         case ShapeEditor::ADD:
@@ -209,6 +216,8 @@ void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
 
 void ShapeEditor::mouseDoubleClickEvent(QMouseEvent *event)
 {
+//    QWidget::mouseDoubleClickEvent(event);
+
     switch(editorMode)
     {
         case ShapeEditor::ADD:

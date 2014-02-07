@@ -4,6 +4,8 @@
 #include <QGraphicsView>
 #include <QMouseEvent>
 
+#include "DragHandle.h"
+#include "EditorUtils.h"
 #include "GridAxisItem.h"
 
 /**
@@ -23,6 +25,7 @@ public:
     void addItemToScene(QGraphicsItem *item);
     void addPointToSelection(const QPoint &selPos);
     void clearSelection();
+    QPointF getLastClickPos() { return lastClickPos; }
 
     // Map to/from Cartesian coordinate system centered at axis origin
     //QPointF MapFromCart(QPointF cartPoint); // TODO
@@ -36,10 +39,17 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void onMoveDragHandle(DragHandle *handle, QMouseEvent *event);
 
 private:
     GridAxisItem *grid;
+//    QMap<QGraphicsEllipseItem*, QPair<QGraphicsItem*, int>> dragHandles;
+    QList<DragHandle*> dragHandles;
     void InitGrid();
+    void addDragHandles(QGraphicsItem *item);
+    void removeDragHandles(QGraphicsItem *item);
+    void internalAddItemToScene(QGraphicsItem *item);
+    QPointF lastClickPos;
 
     static const int SELECT_RADIUS = 5;
 };
