@@ -56,7 +56,7 @@ void DragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             if(lineItem == NULL)
             {
                 qDebug() << "Error: failed cast from QGraphicsItem to " <<
-                            "QGraphicsLineItem in EditorArea::onMoveDragHandle()" <<
+                            "QGraphicsLineItem in DragHandle::onMoveDragHandle()" <<
                             endl;
                 break;
             }
@@ -82,7 +82,7 @@ void DragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             else
             {
                 qDebug() << "Error: improper point index (" << pointIndex <<
-                            ") for line item in EditorArea::onMoveDragHandle()" <<
+                            ") for line item in DragHandle::onMoveDragHandle()" <<
                             endl;
                 break;
             }
@@ -94,6 +94,21 @@ void DragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
         case EditorUtils::GraphicsItemType::POLYGON:
         {
+            auto *polyItem = dynamic_cast<QGraphicsPolygonItem*>(_item);
+            if(polyItem == NULL)
+            {
+                qDebug() << "Error: failed cast from QGraphicsItem to " <<
+                            "QGraphicsPolygonItem in DragHandle::onMoveDragHandle()" <<
+                            endl;
+                break;
+            }
+
+            QPolygonF newPoly = polyItem->polygon();
+            QPointF newPoint = newPoly[_index];
+            newPoint.setX(newPoint.x() + dx);
+            newPoint.setY(newPoint.y() + dy);
+            newPoly[_index] = newPoint;
+            polyItem->setPolygon(newPoly);
 
             break;
         }

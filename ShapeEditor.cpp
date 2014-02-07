@@ -216,7 +216,7 @@ void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
 
 void ShapeEditor::mouseDoubleClickEvent(QMouseEvent *event)
 {
-//    QWidget::mouseDoubleClickEvent(event);
+    QWidget::mouseDoubleClickEvent(event);
 
     switch(editorMode)
     {
