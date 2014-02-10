@@ -36,6 +36,7 @@ public slots:
 
 protected:
     void showEvent(QShowEvent *event);
+    void resizeEvent(QResizeEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -52,6 +53,7 @@ private:
     QPointF lastClickPos;
 
     static const int SELECT_RADIUS = 5;
+    static const int SCENE_PADDING = 5;
 };
 
 #endif // EDITORAREA_H

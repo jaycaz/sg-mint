@@ -158,11 +158,20 @@ void EditorArea::showEvent(QShowEvent *event)
 //    qreal h = scene()->height();
     qreal w = width();
     qreal h = height();
+    scene()->setSceneRect(0, 0, w - SCENE_PADDING, h - SCENE_PADDING);
 //    fitInView(0, 0, scene()->width(), scene()->height());
 //    grid = new GridAxisItem(this);
     grid = new GridAxisItem(this);
     internalAddItemToScene(grid);
     repaint();
+}
+
+void EditorArea::resizeEvent(QResizeEvent *event)
+{
+    QGraphicsView::resizeEvent(event);
+    int newWidth = std::max(width(), (int) scene()->width()) - SCENE_PADDING;
+    int newHeight = std::max(height(), (int) scene()->height()) - SCENE_PADDING;
+    scene()->setSceneRect(0, 0, newWidth, newHeight);
 }
 
 void EditorArea::mouseMoveEvent(QMouseEvent *event)

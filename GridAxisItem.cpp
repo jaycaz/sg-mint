@@ -2,9 +2,9 @@
 
 QRectF GridAxisItem::boundingRect() const
 {
-    //return scene()->sceneRect();
-    //return QRectF(10, 10, 200, 200);
-    return QRectF(0, 0, view->width() - PADDING, view->height() - PADDING);
+    //return QRectF(0, 0, view->width() - PADDING, view->height() - PADDING);
+    //QRectF r = view->sceneRect();
+    return view->sceneRect();
 }
 
 void GridAxisItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
