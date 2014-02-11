@@ -8,7 +8,8 @@ EditorArea::EditorArea(QWidget *parent) :
     setScene(scene);
     setMouseTracking(true);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    setDragMode(QGraphicsView::RubberBandDrag);
+    setRenderHint(QPainter::Antialiasing, true);
+    //setDragMode(QGraphicsView::RubberBandDrag);
     connect(scene, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
 
 //    installEventFilter(parent);
@@ -26,7 +27,7 @@ void EditorArea::addItemToScene(QGraphicsItem *item)
     scene()->addItem(item);
 }
 
-// Intended for internal items (helper items managed by EditorArea)
+// Intended for internal items (non-grammar items such as grid)
 void EditorArea::internalAddItemToScene(QGraphicsItem *item)
 {
     scene()->addItem(item);
@@ -35,7 +36,7 @@ void EditorArea::internalAddItemToScene(QGraphicsItem *item)
 void EditorArea::addPointToSelection(const QPoint &selPos)
 {
     QPainterPath selPath = scene()->selectionArea();
-    selPath.addEllipse(selPos, SELECT_RADIUS, SELECT_RADIUS);
+    selPath.addEllipse(mapFromParent(selPos), SELECT_RADIUS, SELECT_RADIUS);
     scene()->setSelectionArea(selPath, transform());
 
 //    auto *path = new QGraphicsPathItem(selPath);
@@ -45,12 +46,30 @@ void EditorArea::addPointToSelection(const QPoint &selPos)
     //qDebug() << "Selection: " << selArea->pos() << endl;
 }
 
+QList<QGraphicsItem*> EditorArea::itemsAroundPoint(const QPoint &selPos)
+{
+    QPainterPath selPath;
+    selPath.addEllipse(mapFromParent(selPos), SELECT_RADIUS, SELECT_RADIUS);
+    QList<QGraphicsItem*> itemList = items(selPath);
+    itemList.removeAll(grid);
+
+    // TODO: Exclude drag handles as well?
+
+    return itemList;
+}
+
 void EditorArea::clearSelection()
 {
-    foreach(QGraphicsItem *item, scene()->selectedItems())
+//    foreach(QGraphicsItem *item, scene()->selectedItems())
+//    {
+//        removeDragHandles(item);
+//    }
+    foreach(DragHandle *handle, dragHandles)
     {
-        removeDragHandles(item);
+        scene()->removeItem(handle);
+        delete handle;
     }
+    dragHandles.clear();
 
     scene()->setSelectionArea(QPainterPath(), transform());
     scene()->clearSelection();
@@ -176,8 +195,6 @@ void EditorArea::resizeEvent(QResizeEvent *event)
 
 void EditorArea::mouseMoveEvent(QMouseEvent *event)
 {
-    QGraphicsView::mouseMoveEvent(event);
-
     //event->ignore();
     if(event->buttons() & Qt::LeftButton)
     {
@@ -191,10 +208,48 @@ void EditorArea::mouseMoveEvent(QMouseEvent *event)
         }
     }
 
-    if(parent() != NULL)
-    {
-        parent()->event(static_cast<QEvent*>(event));
-    }
+//    if(parent() != NULL)
+//    {
+//        parent()->event(static_cast<QEvent*>(event));
+//    }
+
+    QGraphicsView::mouseMoveEvent(event);
+
+    event->ignore();
+}
+
+void EditorArea::mousePressEvent(QMouseEvent *event)
+{
+    //event->ignore();
+    lastClickPos = mapToScene(event->pos());
+
+//    if(parent() != NULL)
+//    {
+//        parent()->event(static_cast<QEvent*>(event));
+//    }
+
+    QGraphicsView::mousePressEvent(event);
+
+    event->ignore();
+}
+
+void EditorArea::mouseReleaseEvent(QMouseEvent *event)
+{
+//    if(parent() != NULL)
+//    {
+//        parent()->event(static_cast<QEvent*>(event));
+//    }
+
+//    clearSelection();
+
+    QGraphicsView::mouseReleaseEvent(event);
+
+    event->ignore();
+}
+
+void EditorArea::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    QGraphicsView::mouseDoubleClickEvent(event);
 
     event->ignore();
 }
@@ -266,32 +321,6 @@ void EditorArea::onMoveDragHandle(DragHandle *handle, QMouseEvent *event)
 //        break;
 //    }
 //    update();
-}
-
-void EditorArea::mousePressEvent(QMouseEvent *event)
-{
-    QGraphicsView::mousePressEvent(event);
-
-    //event->ignore();
-    lastClickPos = mapToScene(event->pos());
-
-    if(parent() != NULL)
-    {
-        parent()->event(static_cast<QEvent*>(event));
-    }
-
-    event->ignore();
-}
-
-void EditorArea::mouseReleaseEvent(QMouseEvent *event)
-{
-    QGraphicsView::mouseReleaseEvent(event);
-
-    //event->ignore();
-    if(parent() != NULL)
-    {
-        parent()->event(static_cast<QEvent*>(event));
-    }
 }
 
 void EditorArea::InitGrid()

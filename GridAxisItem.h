@@ -18,12 +18,7 @@ public:
      * item will expand to fill parent widget
      */
 
-    GridAxisItem(QGraphicsView *view)
-    {
-        this->view = view;
-        setFlag(QGraphicsItem::ItemIsSelectable, false);
-        setZValue(-1);
-    }
+    GridAxisItem(QGraphicsView *view);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,

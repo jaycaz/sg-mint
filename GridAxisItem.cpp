@@ -1,5 +1,12 @@
 #include "GridAxisItem.h"
 
+GridAxisItem::GridAxisItem(QGraphicsView *view)
+{
+    this->view = view;
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setZValue(-1);
+}
+
 QRectF GridAxisItem::boundingRect() const
 {
     //return QRectF(0, 0, view->width() - PADDING, view->height() - PADDING);

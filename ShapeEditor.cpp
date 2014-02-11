@@ -54,7 +54,12 @@ bool ShapeEditor::eventFilter(QObject *obj, QEvent *event)
 
 void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
 {
-//    QWidget::mouseMoveEvent(event);
+    QPoint fromParent = ui->canvas->mapFromParent(event->pos());
+    QPoint pos = event->pos();
+    QPointF scenePos = ui->canvas->mapToScene(event->pos());
+    placePos = ui->canvas->mapFromParent(event->pos());
+
+    previewDot->setPos(placePos);
 
 //    if(event->buttons() & Qt::LeftButton)
 //    {
@@ -84,7 +89,8 @@ void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
                 else
                 {
                     // Create new line item
-                    drawingItem = new QGraphicsLineItem(startPlaceX, startPlaceY, placePos.x(), placePos.y());
+                    auto *line = new QGraphicsLineItem(startPlaceX, startPlaceY, placePos.x(), placePos.y());
+                    drawingItem = static_cast<QGraphicsItem*>(line);
                     ui->canvas->addItemToScene(drawingItem);
                 }
                 break;
@@ -118,24 +124,30 @@ void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
     // Calculate place position based on options
     // TODO: Add snap-to-grid option
 //    placePos = event->pos();
-    placePos = event->localPos();
 
-    previewDot->setPos(placePos);
+    update();
 
-    repaint();
+    QWidget::mouseMoveEvent(event);
 }
 
 void ShapeEditor::mousePressEvent(QMouseEvent *event)
 {
-//    QWidget::mousePressEvent(event);
-
 //    lastClickPos = placePos;
+    switch(editorMode)
+    {
+        case ShapeEditor::SELECT:
+        if(ui->canvas->itemsAroundPoint(event->pos()).empty())
+        {
+            ui->canvas->clearSelection();
+        }
+        break;
+    }
+
+    QWidget::mousePressEvent(event);
 }
 
 void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
 {
-//    QWidget::mouseReleaseEvent(event);
-
     switch(editorMode)
     {
         case ShapeEditor::ADD:
@@ -165,7 +177,7 @@ void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
                 initPoly << QPointF(placePos);
                 initPoly << QPointF(placePos);
                 QGraphicsPolygonItem *drawingPoly = new QGraphicsPolygonItem(initPoly);
-                drawingItem = (QGraphicsItem*) drawingPoly;
+                drawingItem = static_cast<QGraphicsItem*>(drawingPoly);
                 ui->canvas->addItemToScene(drawingItem);
             }
             else
@@ -187,17 +199,24 @@ void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
         QList<QGraphicsItem*> selectedItems = ui->canvas->scene()->selectedItems();
         qDebug() << "Pos: " << event->pos();
 
-        foreach(QGraphicsItem *item, selectedItems)
-        {
+//        foreach(QGraphicsItem *item, selectedItems)
+//        {
 //            auto *line = (QGraphicsLineItem*) item;
 //            if(line != NULL)
 //            {
 //                line->setPen(QPen(QColor(0, 0, 0)));
 //            }
-        }
+//        }
 
-        ui->canvas->clearSelection();
-        ui->canvas->addPointToSelection(event->pos());
+//        ui->canvas->clearSelection();
+//        if(ui->canvas->itemsAroundPoint(event->pos()).empty())
+//        {
+//            ui->canvas->clearSelection();
+//        }
+//        else
+//        {
+            ui->canvas->addPointToSelection(event->pos());
+//        }
 
         // Item(s) selected, mark
         QList<QGraphicsItem*> newSelectedItems = ui->canvas->scene()->selectedItems();
@@ -212,12 +231,14 @@ void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
 
         break;
     }
+
+    update();
+
+    QWidget::mouseReleaseEvent(event);
 }
 
 void ShapeEditor::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    QWidget::mouseDoubleClickEvent(event);
-
     switch(editorMode)
     {
         case ShapeEditor::ADD:
@@ -228,6 +249,11 @@ void ShapeEditor::mouseDoubleClickEvent(QMouseEvent *event)
             {
                 // Add polygon to grammar shape
 //                grammarShape->items.addToGroup(drawingItem);
+                auto *poly = dynamic_cast<QGraphicsPolygonItem*>(drawingItem);
+                if(poly != NULL && !poly->polygon().empty())
+                {
+                    poly->polygon().removeLast();
+                }
                 grammarShape->items.push_back(drawingItem);
                 drawingItem = NULL;
                 ignoreClick = true;
@@ -235,6 +261,8 @@ void ShapeEditor::mouseDoubleClickEvent(QMouseEvent *event)
             break;
         }
     }
+
+    QWidget::mouseDoubleClickEvent(event);
 }
 
 void ShapeEditor::on_addLineButton_toggled(bool checked)
@@ -286,7 +314,8 @@ void ShapeEditor::onAddButtonToggled(bool checked)
     ignoreClick = false;
     if(checked)
     {
-       ui->canvas->setDragMode(QGraphicsView::NoDrag);
+       ui->canvas->clearSelection();
+       //ui->canvas->setDragMode(QGraphicsView::NoDrag);
        ui->canvas->setCursor(Qt::CrossCursor);
        previewDot->setVisible(true);
        editorMode = ADD;
@@ -305,6 +334,10 @@ void ShapeEditor::on_selectButton_toggled(bool checked)
         ui->canvas->setDragMode(QGraphicsView::RubberBandDrag);
         editorMode = SELECT;
         addMode = NONE;
+    }
+    else
+    {
+        ui->canvas->setDragMode(QGraphicsView::NoDrag);
     }
 }
 

@@ -24,6 +24,7 @@ public:
      */
     void addItemToScene(QGraphicsItem *item);
     void addPointToSelection(const QPoint &selPos);
+    QList<QGraphicsItem*> itemsAroundPoint(const QPoint &selPos);
     void clearSelection();
     QPointF getLastClickPos() { return lastClickPos; }
 
@@ -40,6 +41,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
     void onMoveDragHandle(DragHandle *handle, QMouseEvent *event);
 
 private:
