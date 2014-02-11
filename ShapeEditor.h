@@ -109,6 +109,12 @@ private:
     qreal PREVIEW_DOT_RADIUS = 5;
     QColor PREVIEW_DOT_COLOR = QColor(0, 0, 0, 100); // semi-transparent, black
 
+    QPen SHAPE_PEN = QPen(QBrush(QColor(80, 80, 80)),
+                          3,
+                          Qt::SolidLine,
+                          Qt::SquareCap,
+                          Qt::RoundJoin);
+
     /**
      * @brief Position where item points will actually be placed.
      * Will be calculated based on snap-to-grid settings, etc.

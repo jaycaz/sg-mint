@@ -89,6 +89,15 @@ void EditorArea::onSelectionChanged()
 
 void EditorArea::addDragHandles(QGraphicsItem *item)
 {
+    // Check that item drag handles have not already been added
+    foreach(DragHandle *handle, dragHandles)
+    {
+        if(handle->item() == item)
+        {
+            return;
+        }
+    }
+
     QList<QPointF> points;
     switch(item->type())
     {

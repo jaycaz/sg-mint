@@ -90,6 +90,7 @@ void ShapeEditor::mouseMoveEvent(QMouseEvent* event)
                 {
                     // Create new line item
                     auto *line = new QGraphicsLineItem(startPlaceX, startPlaceY, placePos.x(), placePos.y());
+                    line->setPen(SHAPE_PEN);
                     drawingItem = static_cast<QGraphicsItem*>(line);
                     ui->canvas->addItemToScene(drawingItem);
                 }
@@ -177,6 +178,7 @@ void ShapeEditor::mouseReleaseEvent(QMouseEvent *event)
                 initPoly << QPointF(placePos);
                 initPoly << QPointF(placePos);
                 QGraphicsPolygonItem *drawingPoly = new QGraphicsPolygonItem(initPoly);
+                drawingPoly->setPen(SHAPE_PEN);
                 drawingItem = static_cast<QGraphicsItem*>(drawingPoly);
                 ui->canvas->addItemToScene(drawingItem);
             }
